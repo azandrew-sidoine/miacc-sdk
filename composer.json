@@ -1,0 +1,29 @@
+{
+    "name": "drewlabs/miacc-sdk",
+    "description": "SDK for interactive with account web service",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": ">=6.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Drewlabs\\MiaccSdk\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "azandrew-sidoine",
+            "email": "asmyns.platonnas29@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "drewlabs/mdl-cli": "^0.2.0",
+        "psr/http-client": "^1.0",
+        "drewlabs/curl-client": "^0.2.0",
+        "drewlabs/psr7": "^0.1.3"
+    },
+    "repositories": []
+}
