@@ -66,7 +66,7 @@ final class Response
 	 *
 	 * @return mixed
 	 */
-	function getProperty(string $name)
+	public function get(string $name)
 	{
 		# code...
 		if (false !== strpos($name, '.')) {

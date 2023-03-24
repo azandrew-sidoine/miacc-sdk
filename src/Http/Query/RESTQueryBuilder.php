@@ -110,8 +110,9 @@ final class RESTQueryBuilder implements RequestBodyBuilder
 		$method = $not ? 'notin' : 'in';
 		if (isset($this->__QUERY__[$method])) {
 			$this->__QUERY__[$method][] = [$column, $values];
+		} else {
+			$this->__QUERY__[$method] = [[$column, $values]];
 		}
-		$this->__QUERY__[$method] = [[$column, $values]];
 		return $this;
 	}
 
@@ -130,8 +131,40 @@ final class RESTQueryBuilder implements RequestBodyBuilder
 		$query = $query instanceof SubQuery ? ['column' => $column, 'match' => $query->json()] : (null === $query ? $column : [$column, $query]);
 		if (isset($this->__QUERY__['has'])) {
 			$this->__QUERY__['has'][] = [$query];
+		} else {
+			$this->__QUERY__['has'] = [$query];
 		}
-		$this->__QUERY__['has'] = [$query];
+		return $this;
+	}
+
+	/**
+	 * Add a date value to the builder
+	 * 
+	 * @param string|SubQuery $column 
+	 * @param mixed $operatorOrValue 
+	 * @param mixed $value 
+	 * @param bool $and 
+	 * @return $this 
+	 */
+	public function date($column, $operatorOrValue, $value, $and = true)
+	{
+		$method = $and ? 'wheredate' : 'orwheredate';
+		$this->setWhereQuery($method, $column, $operatorOrValue, $value);
+		return $this;
+	}
+
+	/**
+	 * Sort query filter method
+	 * 
+	 * @param string $column 
+	 * @param int $order 
+	 * @return $this 
+	 */
+	public function sort(string $column, int $order = 1)
+	{
+		$this->__QUERY__ =  $this->__QUERY__ ?? [];
+		$orderstr = intval($order) < 0 ? 'DESC' : 'ASC';
+		$this->__QUERY__['sort'] = ['order' => $orderstr, 'by' => $column];
 		return $this;
 	}
 
@@ -221,8 +254,9 @@ final class RESTQueryBuilder implements RequestBodyBuilder
 		$query = (!isset($operatorOrValue) && !isset($value))  ? ($column instanceof SubQuery ? $column->json() : $column) : (isset($operatorOrValue) && !isset($value) ? [$column, '=', $operatorOrValue] : [$column, $operatorOrValue, $value]);
 		if (isset($this->__QUERY__[$method])) {
 			$this->__QUERY__[$method][] = $query;
+		} else {
+			$this->__QUERY__[$method] = [$query];
 		}
-		$this->__QUERY__[$method] = [$query];
 	}
 
 	private function flatten(array $values)

@@ -144,4 +144,33 @@ class Client
 		$client = new AccountTypeOperationTypesClient($this->client, $host);
 		return $path ? $client->setRequestPath($path) : $client;
 	}
+
+	/**
+	 * Creates operation movements REST client instance
+	 * 
+	 * @param string|null $host 
+	 * @param string|null $path 
+	 * @return OperationMovementsClient 
+	 */
+	public function movements(string $host = null, string $path = null)
+	{
+		# code...
+		$client = new OperationMovementsClient($this->client, $host);
+		return $path ? $client->setRequestPath($path) : $client;
+	}
+
+	/**
+	 * Creates account operation types REST client instance
+	 * 
+	 * @param string|null $host 
+	 * @param string|null $path 
+	 * @return AccountOperationTypesClient 
+	 */
+	public function accountOperationTypes(string $host = null, string $path = null)
+	{
+		# code...
+		$client = new AccountOperationTypesClient($this->client, $host);
+		return $path ? $client->setRequestPath($path) : $client;
+	}
+	// 
 }
