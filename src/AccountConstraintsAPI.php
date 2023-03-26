@@ -138,7 +138,8 @@ class AccountConstraintsAPI
                                 ->where('position', $position),
                             function (Response $response) use ($account, $type, $position) {
                                 return count(array_filter($response->get('data') ?? [], function ($item)  use ($account, $type, $position) {
-                                    return ((object)($item))->accountId === $account->id &&  ((object)($item))->operationTypeId === $type && ((object)($item))->position === $position;
+                                    $item = (object)$item;
+                                    return strval($item->accountId) === strval($account->id) &&  strval($item->operationTypeId) === strval($type) && strval($item->position) === strval($position);
                                 })) > 0;
                             }
                         );
