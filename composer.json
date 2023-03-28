@@ -20,7 +20,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "drewlabs/curl-client": "^0.2.0"
+        "drewlabs/curl-client": "^0.3.0"
     },
     "repositories": []
 }
