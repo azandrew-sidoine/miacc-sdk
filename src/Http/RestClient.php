@@ -17,6 +17,7 @@ use Drewlabs\MiaccSdk\Contracts\ClientInterface;
 trait RestClient
 {
 	use RequestClientBase;
+
 	/**
 	 * {@inheritDoc}
 	 * 
