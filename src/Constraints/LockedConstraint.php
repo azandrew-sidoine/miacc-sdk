@@ -31,7 +31,7 @@ class LockedConstraint implements ConstraintInterface
     }
 
     /**
-     * Creates a function that check if the account is not locked
+     * Creates a function that check if the account is locked
      * 
      * @return \Closure(mixed $account): bool 
      */
@@ -43,7 +43,7 @@ class LockedConstraint implements ConstraintInterface
                 return false;
             }
             // Evaluate the locked state of the account
-            return false === boolval($status->locked);
+            return true === boolval($status->locked);
         };
     }
 

@@ -32,7 +32,7 @@ class DeactivatedConstraint implements ConstraintInterface
     }
 
     /**
-     * Creates a function that check if the account is not deactivated
+     * Creates a function that check if the account is deactivated
      * 
      * @return \Closure(mixed $account): bool 
      */
@@ -44,7 +44,7 @@ class DeactivatedConstraint implements ConstraintInterface
                 return false;
             }
             // Evaluate the deactivated state of the account
-            return false === boolval($status->deactivated);
+            return true === boolval($status->deactivated);
         };
     }
 

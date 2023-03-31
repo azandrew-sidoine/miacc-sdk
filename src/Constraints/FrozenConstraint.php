@@ -31,7 +31,7 @@ class FrozenConstraint implements ConstraintInterface
     }
 
     /**
-     * Creates a factory function that check if the account is not frozen
+     * Creates a factory function that check if the account is frozen
      * 
      * @return \Closure(mixed $account): bool 
      */
@@ -43,7 +43,7 @@ class FrozenConstraint implements ConstraintInterface
                 return false;
             }
             // Evaluate the frozen state of the account
-            return false === boolval($status->frozen);
+            return true === boolval($status->frozen);
         };
     }
 
