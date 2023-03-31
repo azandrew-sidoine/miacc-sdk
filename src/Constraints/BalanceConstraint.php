@@ -39,6 +39,19 @@ class BalanceConstraint implements ConstraintInterface
         return new self(floatval($amount));
     }
 
+    /**
+     * Creates a function that check if the account has sufficient balance
+     * 
+     * @param mixed $amount 
+     * @return \Closure(mixed $account): bool 
+     */
+    public static function factory($amount)
+    {
+        return function($account) use ($amount) {
+            return floatval($account->balance ?? 0) >= (floatval($account->min_amount ?? $account->minAmount ?? 0) + floatval($amount));
+        };
+    }
+
     public function call($argument)
     {
         // Validate the request required parameters
@@ -46,6 +59,6 @@ class BalanceConstraint implements ConstraintInterface
         if (null === ($account = $this->select($argument, $this->bearerToken))) {
             return true;
         }
-        return floatval($account->balance ?? 0) >= (floatval($account->min_amount ?? $account->minAmount ?? 0) + floatval($this->amount));
+        return self::factory($this->amount)($account);
     }
 }

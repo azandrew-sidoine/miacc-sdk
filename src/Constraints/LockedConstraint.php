@@ -30,6 +30,23 @@ class LockedConstraint implements ConstraintInterface
         return new self();
     }
 
+    /**
+     * Creates a function that check if the account is not locked
+     * 
+     * @return \Closure(mixed $account): bool 
+     */
+    public static function factory()
+    {
+        return function($account) {
+            // Check if the accountStatus variable is defined
+            if (null === ($status = $account->accountStatus)) {
+                return false;
+            }
+            // Evaluate the locked state of the account
+            return false === boolval($status->locked);
+        };
+    }
+
     public function call($argument)
     {
         // Validate the request required parameters
@@ -37,11 +54,6 @@ class LockedConstraint implements ConstraintInterface
         if (null === ($account = $this->select($argument, $this->bearerToken))) {
             return true;
         }
-        // Check if the accountStatus variable is defined
-        if (null === ($status = $account->accountStatus)) {
-            return false;
-        }
-        // Evaluate the locked state of the account
-        return true === boolval($status->locked);
+        return self::factory()($account);
     }
 }

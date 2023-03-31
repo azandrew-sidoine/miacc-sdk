@@ -10,7 +10,7 @@ class FrozenConstraint implements ConstraintInterface
 {
     use HasBearerToken;
     use ProvidesAccountQuery;
-    
+
     /**
      * Creates constraint instance
      * 
@@ -30,6 +30,23 @@ class FrozenConstraint implements ConstraintInterface
         return new self();
     }
 
+    /**
+     * Creates a factory function that check if the account is not frozen
+     * 
+     * @return \Closure(mixed $account): bool 
+     */
+    public static function factory()
+    {
+        return function ($account) {
+            // Check if the accoun tStatus variable is defined
+            if (null === ($status = $account->accountStatus)) {
+                return false;
+            }
+            // Evaluate the frozen state of the account
+            return false === boolval($status->frozen);
+        };
+    }
+
     public function call($argument)
     {
         // Validate the request required parameters
@@ -37,11 +54,6 @@ class FrozenConstraint implements ConstraintInterface
         if (null === ($account = $this->select($argument, $this->bearerToken))) {
             return true;
         }
-        // Check if the accoun tStatus variable is defined
-        if (null === ($status = $account->accountStatus)) {
-            return false;
-        }
-        // Evaluate the frozen state of the account
-        return true === boolval($status->frozen);
+        return self::factory()($account);
     }
 }
