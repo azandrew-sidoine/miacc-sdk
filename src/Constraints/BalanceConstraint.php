@@ -6,28 +6,37 @@ use Drewlabs\MiaccSdk\Constraints\Concerns\HasBearerToken;
 use Drewlabs\MiaccSdk\Constraints\Concerns\ProvidesAccountQuery;
 use Drewlabs\MiaccSdk\Contracts\ConstraintInterface;
 
-class DeactivatedConstraint implements ConstraintInterface
+class BalanceConstraint implements ConstraintInterface
 {
-    use HasBearerToken;
+    /**
+     * 
+     * @var float
+     */
+    private $amount;
+
     use ProvidesAccountQuery;
+    use HasBearerToken;
 
     /**
      * Creates constraint instance
      * 
+     * @param float $amount 
      * @return void 
      */
-    private function __construct()
+    private function __construct(float $amount)
     {
+        $this->amount = $amount;
     }
 
     /**
-     * Creates constraint instance
+     * Create class instance
      * 
+     * @param mixed $amount 
      * @return self 
      */
-    public static function new()
+    public static function new($amount)
     {
-        return new self();
+        return new self(floatval($amount));
     }
 
     public function call($argument)
@@ -37,11 +46,6 @@ class DeactivatedConstraint implements ConstraintInterface
         if (null === ($account = $this->select($argument, $this->bearerToken))) {
             return true;
         }
-        // Check if the accoun tStatus variable is defined
-        if (null === ($status = $account->accountStatus)) {
-            return false;
-        }
-        // Evaluate the deactivated state of the account
-        return true === boolval($status->deactivated);
+        return floatval($account->balance ?? 0) >= (floatval($account->min_amount ?? $account->minAmount ?? 0) + floatval($this->amount));
     }
 }

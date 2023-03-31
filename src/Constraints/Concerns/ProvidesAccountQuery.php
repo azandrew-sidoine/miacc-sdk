@@ -26,7 +26,7 @@ trait ProvidesAccountQuery
             ->sendRequest(
                 RESTQueryBuilder::new()
                     ->where('account_number', $account)
-                    ->select('id', 'label', 'account_number', 'accountStatus'),
+                    ->select('*', 'accountStatus', 'accountType'),
                 function (Response $response) {
                     return null !== ($result = $response->get('data.0')) ? json_decode(json_encode($result), false) : $result;
                 }
